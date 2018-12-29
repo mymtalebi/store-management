@@ -1,0 +1,47 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    image: mariadb
+    restart: always
+    command: mysqld --sql_mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_DATABASE: stores
+      MYSQL_USER: store_admin
+      MYSQL_PASSWORD: Ad3in!
+    networks:
+      default:
+        aliases:
+          - db
+  app:
+    container_name: app
+    build:
+      context: ./
+      dockerfile: ./.docker/Dockerfile
+    command: "bash -c \"./artisan migrate && apache2-foreground\""
+    volumes:
+      - ".:/var/www/html"
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: 'true'
+      APP_KEY: QP6nDLXJF6y1zj0I9s6uUZvKD5O1XsqQ
+      APP_LOCALE: en
+      APP_FALLBACK_LOCALE: en
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_DATABASE: stores
+      DB_USERNAME: store_admin
+      DB_PASSWORD: Ad3in!
+    networks:
+        default:
+          aliases:
+            - app
+networks:
+  default:
