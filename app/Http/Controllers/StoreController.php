@@ -1,10 +1,19 @@
 <?php
 
+/**
+ * This file is part of Store Management project.
+ *
+ * (c) Maryam Talebi <mym.talebi@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file readme.md.
+ */
+
 namespace App\Http\Controllers;
 
 use App\Models\Store;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
@@ -18,8 +27,6 @@ class StoreController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct(Store $store)
     {
@@ -44,8 +51,9 @@ class StoreController extends Controller
     }
 
     /**
-     * @param  Request $request
-     * @param  string $id
+     * @param Request $request
+     * @param string  $id
+     *
      * @return JsonResponse
      */
     public function get(Request $request, string $id): JsonResponse
@@ -58,14 +66,15 @@ class StoreController extends Controller
     }
 
     /**
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return JsonResponse
      */
     public function create(Request $request): JsonResponse
     {
         $this->validate($request, [
             'name' => 'required|string|unique:stores,name',
-            'parent_id' => 'nullable|integer'
+            'parent_id' => 'nullable|integer',
         ]);
 
         $parent = $request->has('parent_id')
@@ -82,8 +91,9 @@ class StoreController extends Controller
     }
 
     /**
-     * @param  Request $request
-     * @param  string $id
+     * @param Request $request
+     * @param string  $id
+     *
      * @return JsonResponse
      */
     public function delete(Request $request, string $id): JsonResponse
@@ -95,8 +105,9 @@ class StoreController extends Controller
     }
 
     /**
-     * @param  Request $request
-     * @param  string $id
+     * @param Request $request
+     * @param string  $id
+     *
      * @return JsonResponse
      */
     public function update(Request $request, string $id): JsonResponse
@@ -117,7 +128,7 @@ class StoreController extends Controller
             }
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;

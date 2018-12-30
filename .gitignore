@@ -5,3 +5,4 @@ Homestead.yaml
 .env
 bin/*
 !bin/git-hooks
+.php_cs.cache

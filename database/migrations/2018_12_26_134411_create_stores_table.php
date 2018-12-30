@@ -1,15 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+/**
+ * This file is part of Store Management project.
+ *
+ * (c) Maryam Talebi <mym.talebi@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file readme.md.
+ */
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateStoresTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -35,8 +41,6 @@ class CreateStoresTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

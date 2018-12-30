@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * This file is part of Store Management project.
+ *
+ * (c) Maryam Talebi <mym.talebi@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file readme.md.
+ */
+
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 abstract class Job implements ShouldQueue
 {

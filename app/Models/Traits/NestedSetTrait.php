@@ -1,15 +1,24 @@
 <?php
 
+/**
+ * This file is part of Store Management project.
+ *
+ * (c) Maryam Talebi <mym.talebi@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file readme.md.
+ */
+
 namespace App\Models\Traits;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Collection;
 use App\Exceptions\InvalidOperationException;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 trait NestedSetTrait
 {
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRoot(): boolean
     {
@@ -17,7 +26,7 @@ trait NestedSetTrait
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isLeaf(): boolean
     {
@@ -51,7 +60,7 @@ trait NestedSetTrait
     }
 
     /**
-     *  Returns all descendents of a node
+     *  Returns all descendents of a node.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -64,6 +73,7 @@ trait NestedSetTrait
      * Appends this node to the given node.
      *
      * @param  self
+     *
      * @return self
      */
     public function appendToNode(self $node): self
@@ -75,16 +85,16 @@ trait NestedSetTrait
 
             $this->where('rgt', '>', $rgt)
                 ->update([
-                    'rgt' => DB::raw('rgt + 2')
+                    'rgt' => DB::raw('rgt + 2'),
                 ]);
 
             $this->where('lft', '>', $rgt)
                 ->update([
-                    'lft' => DB::raw('lft + 2')
+                    'lft' => DB::raw('lft + 2'),
                 ]);
 
             $node->fill([
-                'rgt' => DB::raw('rgt + 2')
+                'rgt' => DB::raw('rgt + 2'),
             ])->save();
 
             $this->fill([
@@ -95,7 +105,7 @@ trait NestedSetTrait
             ])->save();
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;
@@ -123,7 +133,7 @@ trait NestedSetTrait
             $this->root_id = $this->id;
             $this->save();
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;
@@ -133,7 +143,7 @@ trait NestedSetTrait
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function deleteNode(): boolean
     {
@@ -149,15 +159,15 @@ trait NestedSetTrait
 
             // update subsequent nodes
             $this->where('rgt', '>', $rgt)->update([
-                'rgt' => DB::raw('rgt - ' . $width)
+                'rgt' => DB::raw('rgt - '.$width),
             ]);
 
             $this->where('lft', '>', $rgt)->update([
-                'lft' => DB::raw('lft - ' . $width)
+                'lft' => DB::raw('lft - '.$width),
             ]);
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;
@@ -167,9 +177,8 @@ trait NestedSetTrait
     }
 
     /**
-     * @param  self $node
-     * @param  int $width
-     * @return void
+     * @param self $node
+     * @param int  $width
      */
     private function createSpace(self $node, int $width)
     {
@@ -179,19 +188,19 @@ trait NestedSetTrait
             $this->where('root_id', '=', $node->root_id)
                 ->where('lft', '>=', $node->rgt)
                 ->update([
-                    'lft' => DB::raw('lft + ' . $width)
+                    'lft' => DB::raw('lft + '.$width),
                 ]);
 
             $this->where('root_id', '=', $node->root_id)
                 ->where('rgt', '>=', $node->rgt)
                 ->update([
-                    'rgt' => DB::raw('rgt + ' . $width)
+                    'rgt' => DB::raw('rgt + '.$width),
                 ]);
 
             $this->refresh();
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;
@@ -201,9 +210,8 @@ trait NestedSetTrait
     /**
      * Move this node with all of its descendents into the new space.
      *
-     * @param  self $node
-     * @param  int $position
-     * @return void
+     * @param self $node
+     * @param int  $position
      */
     private function moveToSpace(self $node, int $position)
     {
@@ -217,8 +225,8 @@ trait NestedSetTrait
                 ->where('lft', '>=', $this->lft)
                 ->where('rgt', '<', $this->lft + $width)
                 ->update([
-                    'lft' => DB::raw('lft + ' . $distance),
-                    'rgt' => DB::raw('rgt + ' . $distance),
+                    'lft' => DB::raw('lft + '.$distance),
+                    'rgt' => DB::raw('rgt + '.$distance),
                     'root_id' => $node->root_id ?: $node->id,
                 ]);
 
@@ -228,7 +236,7 @@ trait NestedSetTrait
             $this->refresh();
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;
@@ -238,9 +246,8 @@ trait NestedSetTrait
     /**
      * Removes old space vacated by subtree.
      *
-     * @param  int $position
-     * @param  int $width
-     * @return void
+     * @param int $position
+     * @param int $width
      */
     private function removeSpace(int $position, int $width)
     {
@@ -249,18 +256,18 @@ trait NestedSetTrait
             $this->where('root_id', '=', $this->root_id)
                 ->where('lft', '>', $position)
                 ->update([
-                    'lft' => DB::raw('lft - ' . $width)
+                    'lft' => DB::raw('lft - '.$width),
                 ]);
             $this->where('root_id', '=', $this->root_id)
                 ->where('rgt', '>=', $position + $width - 1)
                 ->update([
-                    'rgt' => DB::raw('rgt - ' . $width)
+                    'rgt' => DB::raw('rgt - '.$width),
                 ]);
 
             $this->refresh();
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;
@@ -270,7 +277,8 @@ trait NestedSetTrait
     /**
      * Moves this node with all its descendents to the given node.
      *
-     * @param  self $node
+     * @param self $node
+     *
      * @return self
      */
     public function moveToNode(self $node): self
@@ -303,7 +311,7 @@ trait NestedSetTrait
             $parent->removeSpace($tmpPosition, $width);
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             throw $e;
@@ -316,7 +324,8 @@ trait NestedSetTrait
      * Returns tree structure of this node with all of its descendents.
      *
      * @param string $childrenKeyName Key name for the children array
-     * @return array The tree of the node and its children.
+     *
+     * @return array the tree of the node and its children
      */
     public function getTree($childrenKeyName = 'children'): array
     {
@@ -327,25 +336,24 @@ trait NestedSetTrait
             ->get();
 
         return $this->createTree($selfAndDescendents, $this->lft, $this->rgt, $childrenKeyName);
-
     }
 
     /**
      * Returns given nodes tree structure.
      *
-     * @param  Collection $nodes
-     * @param  int $left
-     * @param  int $right
-     * @param  string $childrenKeyName Key name for the children array
-     * @return array The tree of the nodes.
+     * @param Collection $nodes
+     * @param int        $left
+     * @param int        $right
+     * @param string     $childrenKeyName Key name for the children array
+     *
+     * @return array the tree of the nodes
      */
     private function createTree(
         Collection $nodes,
         int $left,
         int $right,
         string $childrenKeyName = 'children'
-    ): array
-    {
+    ): array {
         $tree = [];
         foreach ($nodes as $key => $node) {
             if ($node->lft >= $left && $node->rgt <= $right) {
@@ -360,6 +368,7 @@ trait NestedSetTrait
                 $left = $node->rgt;
             }
         }
+
         return $tree;
     }
 }
