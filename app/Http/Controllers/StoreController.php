@@ -96,7 +96,7 @@ class StoreController extends Controller
      *
      * @return JsonResponse
      */
-    public function delete(Request $request, string $id): JsonResponse
+    public function delete(string $id): JsonResponse
     {
         $store = $this->store->findOrFail($id);
         $store->deleteNode();
@@ -109,6 +109,9 @@ class StoreController extends Controller
      * @param string  $id
      *
      * @return JsonResponse
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function update(Request $request, string $id): JsonResponse
     {

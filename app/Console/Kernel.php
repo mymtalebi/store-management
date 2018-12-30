@@ -28,6 +28,9 @@ class Kernel extends ConsoleKernel
      * Define the application's command schedule.
      *
      * @param \Illuminate\Console\Scheduling\Schedule $schedule
+     *
+     * This will suppress UnusedFormalParameter warnings in this method
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function schedule(Schedule $schedule): void
     {

@@ -75,6 +75,9 @@ trait NestedSetTrait
      * @param  self
      *
      * @return self
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function appendToNode(self $node): self
     {
@@ -118,6 +121,9 @@ trait NestedSetTrait
      * Creates this node as root.
      *
      * @return self
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function createAsRoot(): self
     {
@@ -144,6 +150,9 @@ trait NestedSetTrait
 
     /**
      * @return bool
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function deleteNode(): boolean
     {
@@ -179,6 +188,9 @@ trait NestedSetTrait
     /**
      * @param self $node
      * @param int  $width
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     private function createSpace(self $node, int $width)
     {
@@ -212,6 +224,9 @@ trait NestedSetTrait
      *
      * @param self $node
      * @param int  $position
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     private function moveToSpace(self $node, int $position)
     {
@@ -248,6 +263,9 @@ trait NestedSetTrait
      *
      * @param int $position
      * @param int $width
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     private function removeSpace(int $position, int $width)
     {
@@ -280,6 +298,9 @@ trait NestedSetTrait
      * @param self $node
      *
      * @return self
+     *
+     * This will suppress StaticAccess warnings in this method
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function moveToNode(self $node): self
     {
