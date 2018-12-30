@@ -1,0 +1,36 @@
+<?php
+
+$header = <<<'EOF'
+This file is part of Store Management project.
+
+(c) Maryam Talebi <mym.talebi@gmail.com>
+
+This source file is subject to the MIT license that is bundled
+with this source code in the file readme.md.
+EOF;
+
+$fixer = (new PhpCsFixer\Config('store-management'))
+    ->setRiskyAllowed(TRUE)
+    ->setRules([
+        '@Symfony' => TRUE,
+        '@PHP70Migration' => TRUE,
+
+        // @Symfony:risky
+        'php_unit_construct' => TRUE,
+        'php_unit_dedicate_assert' => TRUE,
+
+        // Misc
+        'array_syntax' => ['syntax' => 'short'],
+        'ordered_imports' => TRUE,
+        'phpdoc_order' => TRUE,
+        'phpdoc_add_missing_param_annotation' => TRUE,
+        'no_useless_else' => TRUE,
+        'no_useless_return' => TRUE,
+
+        'header_comment' => ['header' => $header, 'commentType' => 'PHPDoc'],
+
+        // Exclude
+        'lowercase_constants' => FALSE,
+    ])
+    ->setCacheFile(__DIR__.'/.php_cs.cache')
+;

@@ -1,0 +1,17 @@
+<?php
+
+require_once __DIR__.'/.php_cs.dist';
+
+$fixer->setFinder(
+        PhpCsFixer\Finder::create()
+            ->exclude('vendor')
+            ->exclude('.git')
+            ->exclude('storage')
+            ->in(__DIR__.'/app')
+            ->in(__DIR__.'/routes')
+            ->in(__DIR__.'/database')
+            ->in(__DIR__.'/public')
+            ->in(__DIR__.'/tests')
+    );
+
+return $fixer;
