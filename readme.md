@@ -44,6 +44,10 @@ $ cd store-management
 $ docker-compose up
 ```
 
+
+> Note that running `docker-compose up` for the first time will take some time as it needs to download docker images and project dependencies. But next times would be quic.
+
+
 ## Sample endpoint calls
 ```bash
 $ curl --data "name=Main Branch" localhost/store
@@ -91,6 +95,8 @@ The application is secure againt common web security issues such as Mysql Inject
 
 ## Improvements to be made
 One of the main requirements of the project was to get a store branch with all of its children or to get all the store branches in one call. However, as the stores can have infinite level, I believe it will be more efficient to limit the level of the children of the store retrieved in each call.
+
+In order to improve the write performance of Nested Set we can use a big gap between left an right values of each node. For instance, instead of increasing by one we can increase by 100. As a result we will need less writes to thr tree on insertion or move unless the gap is filled.
 
 The other improvement that can be made is persisting data. In the composer setup I have set up database to run in a container and it is not linked to a persisted database volume. This means after each `docker-compose down` command the data will be lost. A persisted database can be set up and linked to the application via volume configuration in docker-compose.yml file.
 
