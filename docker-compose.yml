@@ -21,7 +21,7 @@ services:
     build:
       context: ./
       dockerfile: ./.docker/Dockerfile
-    command: "bash -c \"./artisan migrate && apache2-foreground\""
+    command: "bash -c \"/root/wait-for-it.sh db:3306 -- composer install --no-plugins --no-scripts && php artisan migrate && apache2-foreground\""
     volumes:
       - ".:/var/www/html"
     depends_on:
