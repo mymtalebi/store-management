@@ -45,7 +45,7 @@ $ docker-compose up
 ```
 
 
-> Note that running `docker-compose up` for the first time will take some time as it needs to download docker images and project dependencies. But next times would be quic.
+> Note that running `docker-compose up` for the first time will take some time as it needs to download docker images and project dependencies. But next times would be quick.
 
 
 ## Sample endpoint calls
