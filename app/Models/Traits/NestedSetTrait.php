@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
 
 trait NestedSetTrait
 {
+    use AbstractNestedSetTrait;
+
     /**
      * @return bool
      */
