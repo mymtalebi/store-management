@@ -20,7 +20,7 @@ trait NestedSetTrait
     /**
      * @return bool
      */
-    public function isRoot(): boolean
+    public function isRoot(): bool
     {
         return is_null($this->parent_id);
     }
@@ -28,7 +28,7 @@ trait NestedSetTrait
     /**
      * @return bool
      */
-    public function isLeaf(): boolean
+    public function isLeaf(): bool
     {
         return $this->lft + 1 === $this->right;
     }
@@ -130,7 +130,7 @@ trait NestedSetTrait
         try {
             DB::beginTransaction();
             $this->fill([
-                'parent_id' => null,
+                'parent_id' => NULL,
                 'lft' => 1,
                 'rgt' => 2,
             ]);
@@ -154,7 +154,7 @@ trait NestedSetTrait
      * This will suppress StaticAccess warnings in this method
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function deleteNode(): boolean
+    public function deleteNode(): bool
     {
         $lft = $this->lft;
         $rgt = $this->rgt;
@@ -182,7 +182,7 @@ trait NestedSetTrait
             throw $e;
         }
 
-        return true;
+        return TRUE;
     }
 
     /**
@@ -356,7 +356,7 @@ trait NestedSetTrait
             ->orderBy('lft')
             ->get();
 
-        return $this->createTree($selfAndDescendents, $this->lft, $this->rgt, $childrenKeyName);
+        return current($this->createTree($selfAndDescendents, $this->lft, $this->rgt, $childrenKeyName));
     }
 
     /**
@@ -383,7 +383,11 @@ trait NestedSetTrait
 
                 $nodeArr = $node->toArray();
                 $nodeArr[$childrenKeyName] = $this->createTree(
-                    $nodes, $node->lft, $node->rgt, $childrenKeyName);
+                    $nodes,
+                    $node->lft,
+                    $node->rgt,
+                    $childrenKeyName
+                );
                 $tree[] = $nodeArr;
 
                 $left = $node->rgt;

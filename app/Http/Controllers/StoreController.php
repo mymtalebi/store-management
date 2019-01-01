@@ -60,9 +60,9 @@ class StoreController extends Controller
     {
         $store = $this->store->findOrFail($id);
 
-        $children = $request->input('children', false);
+        $branches = $request->input('branches', FALSE);
 
-        return $this->success($children ? $store->getTree('branches') : $store);
+        return $this->success($branches ? $store->getTree('branches') : $store);
     }
 
     /**
@@ -79,7 +79,7 @@ class StoreController extends Controller
 
         $parent = $request->has('parent_id')
             ? $this->store->findOrFail($request->input('parent_id'))
-            : null;
+            : NULL;
 
         $store = $this->store->newInstance([
             'name' => $request->input('name'),
